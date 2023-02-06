@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Logo, FormRow } from '../components'
 import Wrapper from '../assets/wrappers/RegisterPage'
+import { toast } from 'react-toastify'
 
 const initialState = {
   name: '',
@@ -24,7 +25,10 @@ const Register = () => {
     const { name, email, password, isMember } = values
     // Below case tell us that if the person is not a member then check the name. If person is member there is no check for name...
     if (!email || !password || (!isMember && !name)) {
-      console.log('Please fill out all the fields')
+      //toast('Please fill out all the fields')
+      //toast.warning('Please fill out all the fields')
+      //toast.success('Please fill out all the fields')
+      toast.error('Please fill out all the fields')
     }
   }
 
