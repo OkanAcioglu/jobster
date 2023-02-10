@@ -6,6 +6,7 @@ import {
   removeUserFromLocalStorage,
   getUserFromLocalStorage,
 } from '../../utils/localStorage'
+import { registerUserThunk, loginUserThunk, updateUserThunk } from './userThunk'
 
 const initialState = {
   //! When user click submit, submit button will be disabeled...
@@ -14,52 +15,78 @@ const initialState = {
   user: getUserFromLocalStorage(),
 }
 
+// export const registerUser = createAsyncThunk(
+//   'user/registerUser',
+//   async (user, thunkAPI) => {
+//     //console.log(`Register user : ${JSON.stringify(user)}`)
+//     try {
+//       const resp = await customFetch.post('/auth/register', user)
+//       //console.log(resp)
+//       return resp.data
+//     } catch (err) {
+//       //toast.error(err.response.data.msg)
+//       //console.log(err.response)
+//       return thunkAPI.rejectWithValue(err.response.data.msg)
+//     }
+//   }
+// )
+//! We refactor the above code and create below. Functionality coming from userThunk.js and now code is little bit cleaner...
 export const registerUser = createAsyncThunk(
   'user/registerUser',
   async (user, thunkAPI) => {
-    //console.log(`Register user : ${JSON.stringify(user)}`)
-    try {
-      const resp = await customFetch.post('/auth/register', user)
-      //console.log(resp)
-      return resp.data
-    } catch (err) {
-      //toast.error(err.response.data.msg)
-      //console.log(err.response)
-      return thunkAPI.rejectWithValue(err.response.data.msg)
-    }
+    return registerUserThunk('/auth/register', user, thunkAPI)
   }
 )
 
+// export const loginUser = createAsyncThunk(
+//   'user/loginUser',
+//   async (user, thunkAPI) => {
+//     //console.log(`Register user : ${JSON.stringify(user)}`)
+//     try {
+//       const resp = await customFetch.post('/auth/login', user)
+//       //console.log(resp)
+//       return resp.data
+//     } catch (err) {
+//       //toast.error(err.response.data.msg)
+//       //console.log(err.response)
+//       return thunkAPI.rejectWithValue(err.response.data.msg)
+//     }
+//   }
+// )
+//! We refactor the above code and create below. Functionality coming from userThunk.js and now code is little bit cleaner...
 export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (user, thunkAPI) => {
-    //console.log(`Register user : ${JSON.stringify(user)}`)
-    try {
-      const resp = await customFetch.post('/auth/login', user)
-      //console.log(resp)
-      return resp.data
-    } catch (err) {
-      //toast.error(err.response.data.msg)
-      //console.log(err.response)
-      return thunkAPI.rejectWithValue(err.response.data.msg)
-    }
+    return loginUserThunk('/auth/login', user, thunkAPI)
   }
 )
 
+// export const updateUser = createAsyncThunk(
+//   'user/updateUser',
+//   async (user, thunkAPI) => {
+//     try {
+//       const resp = await customFetch.patch('auth/updateUser', user, {
+//         headers: {
+//           authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+//         },
+//       })
+//       return resp.data
+//     } catch (err) {
+//       console.log(err.response)
+//       //! In case of logging out user when there is a not authorization error, below code can be used...
+//       // if (err.response.status === 401) {
+//       //   thunkAPI.dispatch(loginUser())
+//       //   return thunkAPI.rejectWithValue(err.response.data.msg)
+//       // }
+//       return thunkAPI.rejectWithValue(err.response.data.msg)
+//     }
+//   }
+// )
+//! We refactor the above code and create below. Functionality coming from userThunk.js and now code is little bit cleaner...
 export const updateUser = createAsyncThunk(
   'user/updateUser',
   async (user, thunkAPI) => {
-    try {
-      const resp = await customFetch.patch('auth/updateUser', user, {
-        headers: {
-          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      })
-      return resp.data
-    } catch (err) {
-      console.log(err.response)
-      return thunkAPI.rejectWithValue(err.response.data.msg)
-    }
+    return updateUserThunk('/auth/updateUser', user, thunkAPI)
   }
 )
 
