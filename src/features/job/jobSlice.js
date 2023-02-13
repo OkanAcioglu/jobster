@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
 import customFetch from '../../utils/axios'
 import { getUserFromLocalStorage } from '../../utils/localStorage'
-
+import { showLoading, hideLoading, getAllJobs } from '../allJobs/allJobsSlice'
 const initialState = {
   isLoading: false,
   position: '',
@@ -34,6 +34,26 @@ export const createJob = createAsyncThunk(
   }
 )
 
+export const deleteJob = createAsyncThunk(
+  'job/deleteJob',
+  async (jobId, thunkAPI) => {
+    thunkAPI.dispatch(showLoading())
+    try {
+      const resp = await customFetch.delete(`/jobs/${jobId}`, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      })
+      thunkAPI.dispatch(getAllJobs())
+      //! delete method generally response data will be deleted object or success that are we do not care most of the case
+      return resp.data.msg
+    } catch (error) {
+      thunkAPI.dispatch(hideLoading())
+      return thunkAPI.rejectWithValue(error.response.data.msg)
+    }
+  }
+)
+
 const jobSlice = createSlice({
   name: 'job',
   initialState,
@@ -58,6 +78,12 @@ const jobSlice = createSlice({
     },
     [createJob.rejected]: (state, { payload }) => {
       state.isLoading = false
+      toast.error(payload)
+    },
+    [deleteJob.fulfilled]: (state, { payload }) => {
+      toast.success(payload)
+    },
+    [deleteJob.rejected]: (state, { payload }) => {
       toast.error(payload)
     },
   },
