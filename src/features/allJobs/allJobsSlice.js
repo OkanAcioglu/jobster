@@ -32,7 +32,7 @@ export const getAllJobs = createAsyncThunk(
           authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
         },
       })
-      console.log(resp.data)
+      //console.log(resp.data)
       return resp.data
     } catch (error) {
       return thunkAPI.rejectWithValue('There is a error...')
