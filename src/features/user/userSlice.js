@@ -1,12 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
-import customFetch from '../../utils/axios'
+//import customFetch from '../../utils/axios'
 import {
   addUserToLocalStorage,
   removeUserFromLocalStorage,
   getUserFromLocalStorage,
 } from '../../utils/localStorage'
-import { registerUserThunk, loginUserThunk, updateUserThunk } from './userThunk'
+import {
+  registerUserThunk,
+  loginUserThunk,
+  updateUserThunk,
+  clearStoreThunk,
+} from './userThunk'
 
 const initialState = {
   //! When user click submit, submit button will be disabeled...
@@ -90,6 +95,8 @@ export const updateUser = createAsyncThunk(
   }
 )
 
+export const clearStore = createAsyncThunk('/user/clearStore', clearStoreThunk)
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -148,6 +155,9 @@ const userSlice = createSlice({
     [updateUser.rejected]: (state, { payload }) => {
       state.isLoading = false
       toast.error(payload)
+    },
+    [clearStore.rejected]: () => {
+      toast.error('There was an error...')
     },
   },
 })
