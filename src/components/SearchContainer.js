@@ -14,7 +14,7 @@ const SearchContainer = () => {
   const dispatch = useDispatch()
 
   const handleSearch = (e) => {
-    // TODO isLoading check
+    if (isLoading) return
     dispatch(handleChange({ name: e.target.name, value: e.target.value }))
   }
 
